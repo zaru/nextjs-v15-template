@@ -6,16 +6,24 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "biome check && next lint",
+    "lint:fix": "npx biome check ./src --fix --unsafe && next lint --fix",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@biomejs/biome": "^1.9.4",
+    "lucide-react": "^0.479.0",
     "next": "15.2.1",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-aria-components": "^1.7.0",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^3.0.2",
+    "tailwind-variants": "^1.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@storybook/nextjs": "^8.6.4",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
