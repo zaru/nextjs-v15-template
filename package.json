@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@biomejs/biome": "^1.9.4",
+    "@prisma/client": "^6.4.1",
     "lucide-react": "^0.479.0",
     "next": "15.2.1",
     "parse-nested-form-data": "^1.0.0",
@@ -32,6 +33,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.1",
+    "prisma": "^6.4.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
