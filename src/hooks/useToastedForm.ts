@@ -9,7 +9,9 @@ export type FormSubmitResult<Payload, ErrorType = DefaultErrorType<Payload>> = {
   toastMessage?: string;
 };
 
-type DefaultErrorType<Payload> = Partial<Record<keyof Payload, string[]>>;
+export type DefaultErrorType<Payload> = Partial<
+  Record<keyof Payload, string[]>
+>;
 
 interface Props<Payload, ErrorType> {
   submitAction: (
