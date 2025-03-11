@@ -1,3 +1,4 @@
+import { CirclePlus } from "lucide-react";
 import { Button } from "./Button";
 
 export default {
@@ -34,5 +35,12 @@ export const Secondary = {
 export const Destructive = {
   args: {
     variant: "destructive",
+  },
+};
+
+export const Icon = {
+  args: {
+    variant: "icon",
+    children: <CirclePlus />,
   },
 };

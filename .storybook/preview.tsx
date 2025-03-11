@@ -1,5 +1,6 @@
 import "../src/app/globals.css";
 import type { Preview } from "@storybook/react";
+import { GlobalToastRegion } from "../src/components/ui/GlobalToastRegion";
 
 const preview: Preview = {
   parameters: {
@@ -10,6 +11,15 @@ const preview: Preview = {
       },
     },
   },
+
+  decorators: [
+    (Story) => (
+      <div>
+        <Story />
+        <GlobalToastRegion />
+      </div>
+    ),
+  ],
 };
 
 export default preview;

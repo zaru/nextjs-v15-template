@@ -6,6 +6,7 @@ import { Form } from "@/components/ui/Form";
 import { TextField } from "@/components/ui/TextField";
 import type { Sample } from "@prisma/client";
 import { type FormEvent, startTransition, useActionState } from "react";
+import { requestFormReset } from "react-dom";
 
 interface Props {
   sample: Sample;
@@ -24,13 +25,18 @@ export function SampleItem(props: Props) {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    startTransition(() => action(formData));
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    startTransition(() => {
+      action(formData);
+    });
   };
 
   return (
-    <div>
-      <div>{props.sample.content}</div>
+    <div className="p-4 border rounded flex justify-between items-center">
+      <div className="font-medium">{props.sample.content}</div>
       <div>
         <Form onSubmit={handleSubmit} validationErrors={state.errors}>
           <TextField
@@ -39,7 +45,7 @@ export function SampleItem(props: Props) {
             name="id"
             defaultValue={`${state.payload.id}`}
           />
-          <Button type="submit" isPending={isPending}>
+          <Button type="submit" isPending={isPending} variant="destructive">
             削除
           </Button>
         </Form>
