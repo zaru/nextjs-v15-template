@@ -10,11 +10,11 @@ const schema = z.object({
   id: z.coerce.number().min(1),
 });
 
-export type Payload = z.infer<typeof schema>;
+export type DeleteSamplePayload = z.infer<typeof schema>;
 
 export async function deleteSample(
   formData: FormData,
-): Promise<FormSubmitResult<Payload>> {
+): Promise<FormSubmitResult<DeleteSamplePayload>> {
   // FormDataをパースしてObjectにする
   const data = parseFormData(formData);
   // Zodでバリデーションを行ってから値を使う
@@ -22,7 +22,7 @@ export async function deleteSample(
   if (!parsed.success) {
     return {
       success: false,
-      payload: data as Payload,
+      payload: data as DeleteSamplePayload,
       errors: parsed.error.flatten().fieldErrors,
     };
   }
