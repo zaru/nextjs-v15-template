@@ -1,7 +1,7 @@
 "use server";
 
+import type { FormSubmitResult } from "@/hooks/useToastedForm";
 import { prisma } from "@/lib/prisma";
-import type { FormResultType } from "@/lib/type";
 import { revalidatePath } from "next/cache";
 import { parseFormData } from "parse-nested-form-data";
 import { z } from "zod";
@@ -10,13 +10,11 @@ const schema = z.object({
   id: z.coerce.number().min(1),
 });
 
-type SchemaType = typeof schema;
-type Payload = FormResultType<SchemaType>["payload"];
+export type Payload = z.infer<typeof schema>;
 
 export async function deleteSample(
-  _prev: FormResultType<SchemaType>,
   formData: FormData,
-): Promise<FormResultType<SchemaType>> {
+): Promise<FormSubmitResult<Payload>> {
   // FormDataをパースしてObjectにする
   const data = parseFormData(formData);
   // Zodでバリデーションを行ってから値を使う
@@ -42,15 +40,13 @@ export async function deleteSample(
     return {
       success: false,
       payload: parsed.data,
-      errors: {
-        id: ["削除に失敗しました"],
-      },
+      toastMessage: "削除に失敗しました",
     };
   }
 
   return {
     success: true,
     payload: parsed.data,
-    errors: {},
+    toastMessage: "削除しました",
   };
 }
