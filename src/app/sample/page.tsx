@@ -4,7 +4,11 @@ import { SampleItem } from "@/app/sample/_components/SampleItem";
 import { prisma } from "@/lib/prisma";
 
 export default async function Page() {
-  const samples = await prisma.sample.findMany();
+  const samples = await prisma.sample.findMany({
+    orderBy: {
+      id: "desc",
+    },
+  });
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">サンプル管理</h1>
