@@ -1,3 +1,5 @@
+"use client";
+
 import { ChevronRight } from "lucide-react";
 import type React from "react";
 import { useContext } from "react";
@@ -74,8 +76,9 @@ export interface DisclosureHeaderProps {
 }
 
 export function DisclosureHeader({ children }: DisclosureHeaderProps) {
-  const { isExpanded } = useContext(DisclosureStateContext)!;
+  const context = useContext(DisclosureStateContext);
   const isInGroup = useContext(DisclosureGroupStateContext) !== null;
+  if (!context) return null;
   return (
     <Heading className="text-lg font-semibold">
       <Button
@@ -88,7 +91,10 @@ export function DisclosureHeader({ children }: DisclosureHeaderProps) {
           <>
             <ChevronRight
               aria-hidden
-              className={chevron({ isExpanded, isDisabled })}
+              className={chevron({
+                isExpanded: context?.isExpanded,
+                isDisabled,
+              })}
             />
             {children}
           </>

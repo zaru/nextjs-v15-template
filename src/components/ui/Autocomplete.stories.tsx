@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import type React from "react";
 import {
   Autocomplete,
   AutocompleteItem,
@@ -19,7 +19,7 @@ const meta: Meta<typeof Autocomplete> = {
 
 export default meta;
 
-export const Example = (args: any) => (
+export const Example = (args: React.ComponentProps<typeof Autocomplete>) => (
   <Autocomplete {...args}>
     <AutocompleteItem>Chocolate</AutocompleteItem>
     <AutocompleteItem id="mint">Mint</AutocompleteItem>
@@ -29,12 +29,14 @@ export const Example = (args: any) => (
   </Autocomplete>
 );
 
-export const DisabledItems = (args: any) => <Example {...args} />;
+export const DisabledItems = (
+  args: React.ComponentProps<typeof Autocomplete>,
+) => <Example {...args} />;
 DisabledItems.args = {
   disabledKeys: ["mint"],
 };
 
-export const Sections = (args: any) => (
+export const Sections = (args: React.ComponentProps<typeof Autocomplete>) => (
   <Autocomplete {...args}>
     <AutocompleteSection title="Fruit">
       <AutocompleteItem id="Apple">Apple</AutocompleteItem>

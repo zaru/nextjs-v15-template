@@ -1,8 +1,8 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
-import { Form } from "react-aria-components";
+import { type DateValue, Form } from "react-aria-components";
 import { Button } from "./Button";
-import { DateRangePicker } from "./DateRangePicker";
+import { DateRangePicker, type DateRangePickerProps } from "./DateRangePicker";
 
 const meta: Meta<typeof DateRangePicker> = {
   component: DateRangePicker,
@@ -17,9 +17,11 @@ const meta: Meta<typeof DateRangePicker> = {
 
 export default meta;
 
-export const Example = (args: any) => <DateRangePicker {...args} />;
+export const Example = (args: DateRangePickerProps<DateValue>) => (
+  <DateRangePicker {...args} />
+);
 
-export const Validation = (args: any) => (
+export const Validation = (args: DateRangePickerProps<DateValue>) => (
   <Form className="flex flex-col gap-2 items-start">
     <DateRangePicker {...args} />
     <Button type="submit" variant="secondary">

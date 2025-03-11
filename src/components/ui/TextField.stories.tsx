@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import type React from "react";
 import { Form } from "react-aria-components";
 import { Button } from "./Button";
 import { TextField } from "./TextField";
@@ -17,9 +17,11 @@ const meta: Meta<typeof TextField> = {
 
 export default meta;
 
-export const Example = (args: any) => <TextField {...args} />;
+export const Example = (args: React.ComponentProps<typeof TextField>) => (
+  <TextField {...args} />
+);
 
-export const Validation = (args: any) => (
+export const Validation = (args: React.ComponentProps<typeof TextField>) => (
   <Form className="flex flex-col gap-2 items-start">
     <TextField {...args} />
     <Button type="submit" variant="secondary">

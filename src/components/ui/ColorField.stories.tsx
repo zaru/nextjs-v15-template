@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import type React from "react";
 import { ColorField } from "./ColorField";
 
 const meta: Meta<typeof ColorField> = {
@@ -16,4 +16,6 @@ const meta: Meta<typeof ColorField> = {
 
 export default meta;
 
-export const Example = (args: any) => <ColorField {...args} />;
+export const Example = (args: React.ComponentProps<typeof ColorField>) => (
+  <ColorField {...args} />
+);

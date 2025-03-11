@@ -1,3 +1,5 @@
+"use client";
+
 import { ArrowUp } from "lucide-react";
 import React from "react";
 import {
@@ -19,7 +21,6 @@ import {
   composeRenderProps,
   useTableOptions,
 } from "react-aria-components";
-import { twMerge } from "tailwind-merge";
 import { tv } from "tailwind-variants";
 import { Checkbox } from "./Checkbox";
 import { composeTailwindRenderProps, focusRing } from "./utils";
@@ -103,7 +104,9 @@ export function TableHeader<T extends object>(props: TableHeaderProps<T>) {
           {selectionMode === "multiple" && <Checkbox slot="selection" />}
         </AriaColumn>
       )}
-      <Collection items={props.columns}>{props.children}</Collection>
+      {props.columns && (
+        <Collection items={props.columns}>{props.children}</Collection>
+      )}
     </AriaTableHeader>
   );
 }
@@ -122,7 +125,11 @@ export function Row<T extends object>({
   const { selectionBehavior, allowsDragging } = useTableOptions();
 
   return (
-    <AriaRow id={id} {...otherProps} className={rowStyles}>
+    <AriaRow
+      {...(id !== undefined ? { id } : {})}
+      {...otherProps}
+      className={rowStyles}
+    >
       {allowsDragging && (
         <Cell>
           <Button slot="drag">≡</Button>
@@ -133,7 +140,7 @@ export function Row<T extends object>({
           <Checkbox slot="selection" />
         </Cell>
       )}
-      <Collection items={columns}>{children}</Collection>
+      {columns && <Collection items={columns}>{children}</Collection>}
     </AriaRow>
   );
 }

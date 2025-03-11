@@ -1,3 +1,5 @@
+"use client";
+
 import type React from "react";
 import {
   Autocomplete as AriaAutocomplete,
@@ -30,9 +32,9 @@ export function Autocomplete<T extends object>({
   return (
     <div className="p-3 border-2 border-gray-200 rounded-xl dark:border-zinc-700">
       <AriaAutocomplete filter={contains} {...props}>
-        <SearchField label={label} />
+        <SearchField {...(label !== undefined ? { label } : {})} />
         <AriaMenu
-          items={items}
+          {...(items !== undefined ? { items } : {})}
           className="p-1 outline-0 h-[190px] overflow-auto"
           {...props}
         >
@@ -49,7 +51,7 @@ export function AutocompleteItem(props: MenuItemProps) {
 
 export interface AutocompleteSectionProps<T> extends AriaMenuSectionProps<T> {
   title?: string;
-  items?: any;
+  items?: Iterable<T>;
 }
 
 export function AutocompleteSection<T extends object>(
@@ -60,7 +62,10 @@ export function AutocompleteSection<T extends object>(
       <Header className="text-sm font-semibold text-gray-500 dark:text-zinc-300 px-4 py-1 truncate sticky -top-[5px] -mt-px -mx-1 z-10 bg-gray-100/60 dark:bg-zinc-700/60 backdrop-blur-md supports-[-moz-appearance:none]:bg-gray-100 border border-gray-200 dark:border-zinc-700 [&+*]:mt-1 rounded">
         {props.title}
       </Header>
-      <Collection items={props.items}>{props.children}</Collection>
+      {/* items が undefined の場合も考慮 */}
+      <Collection items={props.items as Iterable<T>}>
+        {props.children}
+      </Collection>
     </AriaMenuSection>
   );
 }

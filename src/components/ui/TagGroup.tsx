@@ -1,3 +1,5 @@
+"use client";
+
 import { XIcon } from "lucide-react";
 import React, { createContext, useContext } from "react";
 import {
@@ -86,8 +88,8 @@ export function TagGroup<T extends object>({
       <Label>{label}</Label>
       <ColorContext.Provider value={props.color || "gray"}>
         <TagList
-          items={items}
-          renderEmptyState={renderEmptyState}
+          {...(items !== undefined ? { items } : {})}
+          {...(renderEmptyState !== undefined ? { renderEmptyState } : {})}
           className="flex flex-wrap gap-1"
         >
           {children}
@@ -113,7 +115,7 @@ export function Tag({ children, color, ...props }: TagProps) {
   const groupColor = useContext(ColorContext);
   return (
     <AriaTag
-      textValue={textValue}
+      {...(textValue !== undefined ? { textValue } : {})}
       {...props}
       className={composeRenderProps(props.className, (className, renderProps) =>
         tagStyles({ ...renderProps, className, color: color || groupColor }),

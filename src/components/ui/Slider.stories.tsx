@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import type React from "react";
 import { Slider } from "./Slider";
 
 const meta: Meta<typeof Slider> = {
@@ -12,7 +12,9 @@ const meta: Meta<typeof Slider> = {
 
 export default meta;
 
-export const Example = (args: any) => <Slider {...args} />;
+export const Example = (args: React.ComponentProps<typeof Slider>) => (
+  <Slider {...args} />
+);
 
 Example.args = {
   label: "Range",

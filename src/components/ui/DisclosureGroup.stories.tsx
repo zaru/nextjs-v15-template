@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import type React from "react";
 import {
   Disclosure,
   DisclosureGroup,
@@ -17,7 +17,7 @@ const meta: Meta<typeof DisclosureGroup> = {
 
 export default meta;
 
-export const Example = (args: any) => (
+export const Example = (args: React.ComponentProps<typeof DisclosureGroup>) => (
   <DisclosureGroup {...args}>
     <Disclosure>
       <DisclosureHeader>Files</DisclosureHeader>

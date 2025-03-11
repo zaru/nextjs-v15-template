@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   ColorArea as AriaColorArea,
@@ -6,7 +8,7 @@ import {
 import { ColorThumb } from "./ColorThumb";
 import { composeTailwindRenderProps } from "./utils";
 
-export interface ColorAreaProps extends AriaColorAreaProps {}
+export type ColorAreaProps = AriaColorAreaProps;
 
 export function ColorArea(props: ColorAreaProps) {
   return (

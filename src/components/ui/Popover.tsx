@@ -1,3 +1,5 @@
+"use client";
+
 import type React from "react";
 import {
   Popover as AriaPopover,
@@ -32,7 +34,7 @@ export function Popover({
   className,
   ...props
 }: PopoverProps) {
-  const popoverContext = useSlottedContext(PopoverContext)!;
+  const popoverContext = useSlottedContext(PopoverContext);
   const isSubmenu = popoverContext?.trigger === "SubmenuTrigger";
   let offset = showArrow ? 12 : 8;
   offset = isSubmenu ? offset - 6 : offset;
@@ -47,6 +49,8 @@ export function Popover({
       {showArrow && (
         <OverlayArrow className="group">
           <svg
+            role="img"
+            aria-label="arrow"
             width={12}
             height={12}
             viewBox="0 0 12 12"

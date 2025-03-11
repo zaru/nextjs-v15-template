@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import type React from "react";
 import { ColorPicker } from "./ColorPicker";
 
 const meta: Meta<typeof ColorPicker> = {
@@ -16,4 +16,6 @@ const meta: Meta<typeof ColorPicker> = {
 
 export default meta;
 
-export const Example = (args: any) => <ColorPicker {...args} />;
+export const Example = (args: React.ComponentProps<typeof ColorPicker>) => (
+  <ColorPicker {...args} />
+);

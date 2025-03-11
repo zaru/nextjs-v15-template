@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Slider as AriaSlider,
@@ -67,9 +69,10 @@ export function Slider<T extends number | number[]>({
             <div className={trackStyles(renderProps)} />
             {state.values.map((_, i) => (
               <SliderThumb
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 key={i}
                 index={i}
-                aria-label={thumbLabels?.[i]}
+                aria-label={thumbLabels?.[i] || "slider-thumb"}
                 className={thumbStyles}
               />
             ))}

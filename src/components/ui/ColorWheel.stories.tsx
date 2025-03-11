@@ -1,6 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
-import { ColorWheel } from "./ColorWheel";
+import { ColorWheel, type ColorWheelProps } from "./ColorWheel";
 
 const meta: Meta<typeof ColorWheel> = {
   component: ColorWheel,
@@ -12,4 +12,4 @@ const meta: Meta<typeof ColorWheel> = {
 
 export default meta;
 
-export const Example = (args: any) => <ColorWheel {...args} />;
+export const Example = (args: ColorWheelProps) => <ColorWheel {...args} />;

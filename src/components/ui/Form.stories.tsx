@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import type React from "react";
 import { Button } from "./Button";
 import { DateField } from "./DateField";
 import { Form } from "./Form";
@@ -15,7 +15,7 @@ const meta: Meta<typeof Form> = {
 
 export default meta;
 
-export const Example = (args: any) => (
+export const Example = (args: React.ComponentProps<typeof Form>) => (
   <Form {...args}>
     <TextField label="Email" name="email" type="email" isRequired />
     <DateField label="Birth date" isRequired />

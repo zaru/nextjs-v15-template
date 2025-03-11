@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import type React from "react";
 import { Meter } from "./Meter";
 
 const meta: Meta<typeof Meter> = {
@@ -12,7 +12,9 @@ const meta: Meta<typeof Meter> = {
 
 export default meta;
 
-export const Example = (args: any) => <Meter {...args} />;
+export const Example = (args: React.ComponentProps<typeof Meter>) => (
+  <Meter {...args} />
+);
 
 Example.args = {
   label: "Storage space",

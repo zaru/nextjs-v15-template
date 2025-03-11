@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Form as RACForm,
@@ -6,7 +8,7 @@ import {
 import { twMerge } from "tailwind-merge";
 
 interface FormProps extends Omit<RACFormProps, "validationErrors"> {
-  validationErrors?: Partial<Record<string, string[]>>;
+  validationErrors?: Partial<Record<string, string[]>> | undefined;
 }
 
 export function Form({ className, validationErrors, ...props }: FormProps) {

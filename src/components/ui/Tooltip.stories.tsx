@@ -1,6 +1,6 @@
 import type { Meta } from "@storybook/react";
 import { PrinterIcon, SaveIcon } from "lucide-react";
-import React from "react";
+import type React from "react";
 import { TooltipTrigger } from "react-aria-components";
 import { Button } from "./Button";
 import { Tooltip } from "./Tooltip";
@@ -15,7 +15,7 @@ const meta: Meta<typeof Tooltip> = {
 
 export default meta;
 
-export const Example = (args: any) => (
+export const Example = (args: React.ComponentProps<typeof Tooltip>) => (
   <div className="flex gap-2">
     <TooltipTrigger>
       <Button variant="secondary" className="px-2">

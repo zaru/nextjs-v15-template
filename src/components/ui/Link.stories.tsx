@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import type React from "react";
 import { Link } from "./Link";
 
 const meta: Meta<typeof Link> = {
@@ -12,7 +12,9 @@ const meta: Meta<typeof Link> = {
 
 export default meta;
 
-export const Example = (args: any) => <Link {...args}>The missing link</Link>;
+export const Example = (args: React.ComponentProps<typeof Link>) => (
+  <Link {...args}>The missing link</Link>
+);
 
 Example.args = {
   href: "https://www.imdb.com/title/tt6348138/",

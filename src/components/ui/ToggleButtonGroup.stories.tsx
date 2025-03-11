@@ -1,6 +1,6 @@
 import type { Meta } from "@storybook/react";
 import { Bold, Italic, Underline } from "lucide-react";
-import React from "react";
+import type React from "react";
 import { ToggleButton } from "./ToggleButton";
 import { ToggleButtonGroup } from "./ToggleButtonGroup";
 
@@ -14,7 +14,9 @@ const meta: Meta<typeof ToggleButtonGroup> = {
 
 export default meta;
 
-export const Example = (args: any) => (
+export const Example = (
+  args: React.ComponentProps<typeof ToggleButtonGroup>,
+) => (
   <ToggleButtonGroup {...args}>
     <ToggleButton id="bold" aria-label="Bold">
       <Bold className="w-4 h-4" />

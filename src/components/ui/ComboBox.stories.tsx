@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import type React from "react";
 import { Form } from "react-aria-components";
 import { Button } from "./Button";
 import { ComboBox, ComboBoxItem, ComboBoxSection } from "./ComboBox";
@@ -17,7 +17,7 @@ const meta: Meta<typeof ComboBox> = {
 
 export default meta;
 
-export const Example = (args: any) => (
+export const Example = (args: React.ComponentProps<typeof ComboBox>) => (
   <ComboBox {...args}>
     <ComboBoxItem>Chocolate</ComboBoxItem>
     <ComboBoxItem id="mint">Mint</ComboBoxItem>
@@ -26,12 +26,14 @@ export const Example = (args: any) => (
   </ComboBox>
 );
 
-export const DisabledItems = (args: any) => <Example {...args} />;
+export const DisabledItems = (args: React.ComponentProps<typeof ComboBox>) => (
+  <Example {...args} />
+);
 DisabledItems.args = {
   disabledKeys: ["mint"],
 };
 
-export const Sections = (args: any) => (
+export const Sections = (args: React.ComponentProps<typeof ComboBox>) => (
   <ComboBox {...args}>
     <ComboBoxSection title="Fruit">
       <ComboBoxItem id="Apple">Apple</ComboBoxItem>
@@ -60,7 +62,7 @@ Sections.args = {
   label: "Preferred fruit or vegetable",
 };
 
-export const Validation = (args: any) => (
+export const Validation = (args: React.ComponentProps<typeof ComboBox>) => (
   <Form className="flex flex-col gap-2 items-start">
     <Example {...args} />
     <Button type="submit" variant="secondary">

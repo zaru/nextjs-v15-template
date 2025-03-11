@@ -1,6 +1,6 @@
 import { BoldIcon, ItalicIcon, UnderlineIcon } from "lucide-react";
 import React from "react";
-import { Group } from "react-aria-components";
+import { Group, type ToolbarProps } from "react-aria-components";
 import { Button } from "./Button";
 import { Checkbox } from "./Checkbox";
 import { Separator } from "./Separator";
@@ -19,7 +19,7 @@ const meta: Meta<typeof Toolbar> = {
 
 export default meta;
 
-export const Example = (args: any) => (
+export const Example = (args: ToolbarProps) => (
   <Toolbar aria-label="Text formatting" {...args}>
     <Group aria-label="Style" className="contents">
       <ToggleButton aria-label="Bold" className="p-2.5">

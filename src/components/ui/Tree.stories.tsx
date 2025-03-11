@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import type React from "react";
 import { Tree, TreeItem, TreeItemContent } from "./Tree";
 
 const meta: Meta<typeof Tree> = {
@@ -12,7 +12,7 @@ const meta: Meta<typeof Tree> = {
 
 export default meta;
 
-export const Example = (args: any) => (
+export const Example = (args: React.ComponentProps<typeof Tree>) => (
   <Tree
     aria-label="Files"
     style={{ height: "400px", width: "300px" }}
@@ -46,7 +46,9 @@ Example.args = {
   defaultSelectedKeys: ["project"],
 };
 
-export const DisabledItems = (args: any) => <Example {...args} />;
+export const DisabledItems = (args: React.ComponentProps<typeof Tree>) => (
+  <Example {...args} />
+);
 DisabledItems.args = {
   ...Example.args,
   disabledKeys: ["photos"],

@@ -1,6 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
-import { ProgressBar } from "./ProgressBar";
+import { ProgressBar, type ProgressBarProps } from "./ProgressBar";
 
 const meta: Meta<typeof ProgressBar> = {
   component: ProgressBar,
@@ -12,7 +12,7 @@ const meta: Meta<typeof ProgressBar> = {
 
 export default meta;
 
-export const Example = (args: any) => <ProgressBar {...args} />;
+export const Example = (args: ProgressBarProps) => <ProgressBar {...args} />;
 
 Example.args = {
   label: "Loading…",

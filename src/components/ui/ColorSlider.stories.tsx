@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import type React from "react";
 import { ColorSlider } from "./ColorSlider";
 
 const meta: Meta<typeof ColorSlider> = {
@@ -12,7 +12,9 @@ const meta: Meta<typeof ColorSlider> = {
 
 export default meta;
 
-export const Example = (args: any) => <ColorSlider {...args} />;
+export const Example = (args: React.ComponentProps<typeof ColorSlider>) => (
+  <ColorSlider {...args} />
+);
 
 Example.args = {
   label: "Fill Color",

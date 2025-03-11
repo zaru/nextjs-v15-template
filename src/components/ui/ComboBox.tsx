@@ -1,3 +1,5 @@
+"use client";
+
 import { ChevronDown } from "lucide-react";
 import type React from "react";
 import {
@@ -55,7 +57,7 @@ export function ComboBox<T extends object>({
       <FieldError>{errorMessage}</FieldError>
       <Popover className="w-(--trigger-width)">
         <ListBox
-          items={items}
+          {...(items !== undefined ? { items } : {})}
           className="outline-0 p-1 max-h-[inherit] overflow-auto [clip-path:inset(0_0_0_0_round_.75rem)]"
         >
           {children}

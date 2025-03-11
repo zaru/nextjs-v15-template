@@ -1,5 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
+import type { TabsProps } from "react-aria-components";
 import { Tab, TabList, TabPanel, Tabs } from "./Tabs";
 
 const meta: Meta<typeof Tabs> = {
@@ -12,7 +13,7 @@ const meta: Meta<typeof Tabs> = {
 
 export default meta;
 
-export const Example = (args: any) => (
+export const Example = (args: TabsProps) => (
   <Tabs {...args}>
     <TabList aria-label="History of Ancient Rome">
       <Tab id="FoR">Founding of Rome</Tab>

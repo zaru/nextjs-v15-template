@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   GridList as AriaGridList,
@@ -44,7 +46,11 @@ const itemStyles = tv({
 export function GridListItem({ children, ...props }: GridListItemProps) {
   const textValue = typeof children === "string" ? children : undefined;
   return (
-    <AriaGridListItem textValue={textValue} {...props} className={itemStyles}>
+    <AriaGridListItem
+      {...(textValue !== undefined ? { textValue } : {})}
+      {...props}
+      className={itemStyles}
+    >
       {({ selectionMode, selectionBehavior, allowsDragging }) => (
         <>
           {/* Add elements for drag and drop and selection. */}

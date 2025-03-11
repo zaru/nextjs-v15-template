@@ -1,3 +1,5 @@
+"use client";
+
 import type React from "react";
 import {
   Tooltip as AriaTooltip,
@@ -34,6 +36,8 @@ export function Tooltip({ children, ...props }: TooltipProps) {
     >
       <OverlayArrow>
         <svg
+          role="img"
+          aria-label="tooltip"
           width={8}
           height={8}
           viewBox="0 0 8 8"

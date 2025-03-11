@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import type React from "react";
 import { ListBox, ListBoxItem } from "./ListBox";
 
 const meta: Meta<typeof ListBox> = {
@@ -12,7 +12,7 @@ const meta: Meta<typeof ListBox> = {
 
 export default meta;
 
-export const Example = (args: any) => (
+export const Example = (args: React.ComponentProps<typeof ListBox>) => (
   <ListBox aria-label="Ice cream flavor" {...args}>
     <ListBoxItem id="chocolate">Chocolate</ListBoxItem>
     <ListBoxItem id="mint">Mint</ListBoxItem>
@@ -26,7 +26,9 @@ Example.args = {
   selectionMode: "multiple",
 };
 
-export const DisabledItems = (args: any) => <Example {...args} />;
+export const DisabledItems = (args: React.ComponentProps<typeof ListBox>) => (
+  <Example {...args} />
+);
 DisabledItems.args = {
   ...Example.args,
   disabledKeys: ["mint"],

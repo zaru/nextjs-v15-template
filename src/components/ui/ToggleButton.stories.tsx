@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import type React from "react";
 import { ToggleButton } from "./ToggleButton";
 
 const meta: Meta<typeof ToggleButton> = {
@@ -12,6 +12,6 @@ const meta: Meta<typeof ToggleButton> = {
 
 export default meta;
 
-export const Example = (args: any) => (
+export const Example = (args: React.ComponentProps<typeof ToggleButton>) => (
   <ToggleButton {...args}>Pin</ToggleButton>
 );

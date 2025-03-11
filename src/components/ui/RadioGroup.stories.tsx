@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { Form } from "react-aria-components";
 import { Button } from "./Button";
 import { Radio, RadioGroup } from "./RadioGroup";
@@ -30,7 +30,7 @@ export const Default = {
   args: {},
 };
 
-export const Validation = (args: any) => (
+export const Validation = (args: React.ComponentProps<typeof RadioGroup>) => (
   <Form className="flex flex-col gap-2 items-start">
     <RadioGroup {...args} />
     <Button type="submit" variant="secondary">

@@ -1,8 +1,8 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import type React from "react";
 import { Tag, TagGroup } from "./TagGroup";
 
-const meta: Meta<typeof Example> = {
+const meta: Meta<typeof TagGroup> = {
   component: TagGroup,
   parameters: {
     layout: "centered",
@@ -12,7 +12,7 @@ const meta: Meta<typeof Example> = {
 
 export default meta;
 
-export const Example = (args: any) => (
+export const Example = (args: React.ComponentProps<typeof TagGroup>) => (
   <TagGroup {...args}>
     <Tag>Chocolate</Tag>
     <Tag isDisabled>Mint</Tag>

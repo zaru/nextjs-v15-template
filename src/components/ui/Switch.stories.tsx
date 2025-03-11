@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import type React from "react";
 import { Switch } from "./Switch";
 
 const meta: Meta<typeof Switch> = {
@@ -12,4 +12,6 @@ const meta: Meta<typeof Switch> = {
 
 export default meta;
 
-export const Example = (args: any) => <Switch {...args}>Wi-Fi</Switch>;
+export const Example = (args: React.ComponentProps<typeof Switch>) => (
+  <Switch {...args}>Wi-Fi</Switch>
+);
