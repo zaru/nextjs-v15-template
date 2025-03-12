@@ -1,0 +1,318 @@
+# Next.js ベストプラクティス
+
+このドキュメントは、Next.js v15のベストプラクティスをまとめたものです。RooCode (AI) が参照し、高品質なNext.jsアプリケーションを実装するためのガイドラインとして使用します。
+
+## 1. ディレクトリ構造とルーティング
+
+### 1.1 App Router構造
+- `src/app/` ディレクトリを使用してApp Routerを実装する
+- 各ルートは独自のディレクトリとpage.tsxファイルを持つ
+- 動的ルートは `[param]` 形式で表現する（例: `[id]`）
+
+### 1.2 プライベートフォルダ
+- アンダースコア（`_`）プレフィックスを使用してプライベートフォルダを作成する
+- ルーティングに含めたくないコンポーネントやユーティリティは `_components` や `_actions` などのプライベートフォルダに配置する
+- 関連するコンポーネントやアクションは、それらが使用されるルートの近くに配置する
+
+### 1.3 ファイル命名規則
+- コンポーネントファイルはPascalCase（例: `CommonForm.tsx`）
+- ユーティリティやアクションファイルはcamelCase（例: `createSample.ts`）
+- ページコンポーネントは `page.tsx` という名前を使用する
+
+## 2. Server ComponentsとClient Components
+
+### 2.1 Server Components
+- デフォルトでは、すべてのコンポーネントはServer Componentsとして扱われる
+- データフェッチやデータベースアクセスを行うコンポーネントはServer Componentsとして実装する
+- Server Componentsでは直接非同期データフェッチが可能（`async/await`）
+
+```tsx
+// Server Componentの例
+export default async function Page() {
+  const data = await fetchData();
+  return <div>{data}</div>;
+}
+```
+
+### 2.2 Client Components
+- インタラクティブな要素を持つコンポーネントはClient Componentsとして実装する
+- ファイルの先頭に `"use client"` ディレクティブを追加する
+- React hooksを使用するコンポーネントはClient Componentsにする必要がある
+
+```tsx
+"use client";
+
+import { useState } from "react";
+
+export function InteractiveComponent() {
+  const [state, setState] = useState(initialState);
+  // ...
+}
+```
+
+### 2.3 コンポーネント分割の原則
+- Server ComponentsとClient Componentsを適切に分割する
+- Client Componentsは必要な部分だけに限定し、パフォーマンスを最適化する
+- 大きなServer Componentsの中に小さなClient Componentsをネストさせる構造が推奨される
+
+## 3. Server Actions
+
+### 3.1 基本実装
+- ファイルの先頭に `"use server"` ディレクティブを追加する
+- FormDataを受け取り、型安全な結果を返す関数として実装する
+- アクションの結果は明確な型を持つオブジェクトとして返す
+
+```ts
+"use server";
+
+export async function createItem(formData: FormData): Promise<Result> {
+  // 実装...
+}
+```
+
+### 3.2 データバリデーション
+- Zodなどのバリデーションライブラリを使用してデータを検証する
+- FormDataをパースしてからバリデーションを行う
+- バリデーションエラーは適切な形式で返す
+
+```ts
+const schema = z.object({
+  content: z.string().min(1, "内容を入力してください"),
+});
+
+const data = parseFormData(formData);
+const parsed = schema.safeParse(data);
+if (!parsed.success) {
+  return {
+    success: false,
+    payload: data,
+    errors: parsed.error.flatten().fieldErrors,
+  };
+}
+```
+
+### 3.3 エラーハンドリング
+- try/catchを使用して例外を捕捉する
+- エラーメッセージをユーザーフレンドリーな形で返す
+- デバッグ情報はコンソールに出力する
+
+```ts
+try {
+  // データベース操作など
+} catch (error) {
+  console.log(error);
+  return {
+    success: false,
+    payload: data,
+    toastMessage: "操作に失敗しました",
+  };
+}
+```
+
+### 3.4 キャッシュ管理
+- データ変更後は `revalidatePath` または `revalidateTag` を使用してキャッシュを更新する
+- 関連するすべてのパスを再検証する
+
+```ts
+revalidatePath("/sample");
+```
+
+## 4. フォーム処理
+
+### 4.1 カスタムフックの活用
+- フォーム処理のロジックをカスタムフックにまとめる
+- 送信、バリデーション、エラー処理、成功処理などを一元管理する
+
+```tsx
+const { state, handleSubmit, isPending } = useToastedForm({
+  submitAction: createSample,
+  initialPayload: initialData,
+  options: {
+    resetOnSuccess: true,
+  },
+});
+```
+
+### 4.2 型安全なフォーム
+- フォームの値とエラーに明確な型定義を行う
+- Zodの型推論（`z.infer<typeof schema>`）を活用する
+- ジェネリクスを使用して柔軟な型定義を実現する
+
+```ts
+export type FormPayload = z.infer<typeof schema>;
+
+export function useTypedForm<T extends FormPayload>() {
+  // 実装...
+}
+```
+
+### 4.3 UX向上のためのフィードバック
+- 送信中の状態表示（ローディングインジケータ）
+- 成功/エラー時のトースト表示
+- フォームリセットのタイミング制御
+
+```tsx
+<Button type="submit" isPending={isPending}>
+  送信
+</Button>
+```
+
+## 5. データアクセス
+
+### 5.1 Prismaの活用
+- Prismaを使用してデータベースアクセスを型安全に行う
+- シングルトンパターンでPrismaClientを初期化し、接続数を最適化する
+
+```ts
+const globalForPrisma = global as unknown as {
+  prisma: PrismaClient | undefined;
+};
+
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: ["query"],
+  });
+
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+```
+
+### 5.2 データフェッチパターン
+- Server Componentsで直接データをフェッチする
+- 必要なデータのみを取得し、オーバーフェッチを避ける
+- 適切なソート順やフィルタリングを指定する
+
+```ts
+const items = await prisma.item.findMany({
+  orderBy: {
+    id: "desc",
+  },
+  where: {
+    // フィルタリング条件
+  },
+  select: {
+    // 必要なフィールドのみ選択
+  },
+});
+```
+
+## 6. コンポーネント設計
+
+### 6.1 再利用可能なコンポーネント
+- 共通の機能を持つコンポーネントは再利用可能な形で設計する
+- 明確なPropsインターフェースを定義する
+- 汎用性と特殊性のバランスを考慮する
+
+```tsx
+interface Props<T> {
+  action: (formData: FormData) => Promise<Result<T>>;
+  initialPayload: T;
+  // その他のプロパティ
+}
+
+export function CommonComponent<T extends BaseType>(props: Props<T>) {
+  // 実装...
+}
+```
+
+### 6.2 UIコンポーネントの分離
+- ビジネスロジックとUIを分離する
+- UIコンポーネントは `/components/ui` などの専用ディレクトリに配置する
+- 再利用可能なUIコンポーネントはアプリケーション全体で共有する
+
+### 6.3 型安全なProps
+- コンポーネントのPropsに明確な型定義を行う
+- 必須プロパティと任意プロパティを区別する
+- 複雑なPropsはネストされたインターフェースに分割する
+
+```tsx
+interface Props {
+  item: {
+    id: number;
+    content: string;
+  };
+  onAction?: () => void;
+}
+```
+
+## 7. エラーハンドリングとバリデーション
+
+### 7.1 サーバーサイドのエラーハンドリング
+- try/catchを使用して例外を捕捉する
+- 適切なエラーメッセージを返す
+- 開発環境ではより詳細なエラー情報を提供する
+
+### 7.2 クライアントサイドのエラー表示
+- バリデーションエラーをフォームフィールドに関連付けて表示する
+- グローバルエラーメッセージをトーストなどで表示する
+- エラー状態に応じてUIを調整する
+
+### 7.3 Zodによるバリデーション
+- Zodスキーマを使用してデータを検証する
+- エラーメッセージをローカライズする
+- 複雑なバリデーションルールをスキーマに組み込む
+
+```ts
+const schema = z.object({
+  email: z.string().email("有効なメールアドレスを入力してください"),
+  password: z.string().min(8, "パスワードは8文字以上必要です"),
+});
+```
+
+## 8. パフォーマンス最適化
+
+### 8.1 コンポーネントの分割
+- 大きなコンポーネントを小さな単位に分割する
+- 再レンダリングの範囲を最小限に抑える
+- メモ化（React.memo, useMemo, useCallback）を適切に使用する
+
+### 8.2 データフェッチの最適化
+- 必要なデータのみをフェッチする
+- 並列データフェッチを活用する
+- キャッシュを適切に管理する
+
+```ts
+const [data1, data2] = await Promise.all([
+  fetchData1(),
+  fetchData2(),
+]);
+```
+
+### 8.3 ビルド最適化
+- 不要なインポートを削除する
+- コード分割を活用する
+- 画像やアセットを最適化する
+
+## 9. セキュリティ
+
+### 9.1 入力データの検証
+- すべてのユーザー入力を検証する
+- Server Actionsでのバリデーションを必ず行う
+- SQLインジェクションやXSSを防止する
+
+### 9.2 認証と認可
+- 適切な認証メカニズムを実装する
+- ルートやアクションへのアクセス制御を行う
+- セッション管理を適切に行う
+
+### 9.3 環境変数の管理
+- 機密情報は環境変数として管理する
+- 環境変数は.envファイルで管理し、バージョン管理から除外する
+- クライアントサイドで使用する環境変数は `NEXT_PUBLIC_` プレフィックスを付ける
+
+## 10. テスト
+
+### 10.1 ユニットテスト
+- コンポーネントやユーティリティ関数の単体テストを実装する
+- Jest, React Testing Libraryなどのテストツールを活用する
+- モックを適切に使用してテストを分離する
+
+### 10.2 統合テスト
+- 複数のコンポーネントやAPIの連携をテストする
+- エンドツーエンドのユーザーフローをテストする
+- エッジケースやエラーケースもテストする
+
+### 10.3 テスト駆動開発
+- テストファーストの開発を検討する
+- テストカバレッジを監視する
+- CIパイプラインにテストを組み込む
