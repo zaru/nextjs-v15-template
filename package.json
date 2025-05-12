@@ -6,6 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "test": "vitest run",
     "lint": "biome check && next lint",
     "lint:fix": "npx biome check ./src --fix --unsafe && next lint --fix",
     "storybook": "storybook dev -p 6006",
@@ -29,13 +30,19 @@
     "@eslint/eslintrc": "^3",
     "@storybook/nextjs": "^8.6.4",
     "@tailwindcss/postcss": "^4.0.12",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.2.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9",
     "eslint-config-next": "15.2.1",
+    "jsdom": "^26.0.0",
     "prisma": "^6.4.1",
     "tailwindcss": "^4.0.12",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.0.8"
   }
 }
