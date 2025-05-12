@@ -16,18 +16,23 @@ const toastQueue = new ToastQueue<ToastType>({
   maxVisibleToasts: 5,
   // ViewTransitionアニメーション対応
   wrapUpdate(fn) {
-    if ("startViewTransition" in document) {
-      document.startViewTransition(() => {
-        flushSync(fn);
-      });
-    } else {
-      fn();
+    // SSR時あるいはViewTransition未対応ブラウザでは通常のflushSyncを使用
+    if (
+      typeof document === "undefined" ||
+      !("startViewTransition" in document)
+    ) {
+      return fn();
     }
+    document.startViewTransition(() => {
+      flushSync(fn);
+    });
   },
 });
 
 export function addToastQueue({ status, message }: ToastType) {
-  toastQueue.add({ status, message }, { timeout: 4000 });
+  if (!toastQueue.visibleToasts.find((t) => t.content.message === message)) {
+    toastQueue.add({ status, message }, { timeout: 4000 });
+  }
 }
 
 export function GlobalToastRegion() {
