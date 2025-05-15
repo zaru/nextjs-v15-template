@@ -2,21 +2,17 @@ import { addToastQueue } from "@/components/ui/GlobalToastRegion";
 import { type FormEvent, startTransition, useActionState, useRef } from "react";
 import { requestFormReset } from "react-dom";
 
-export type FormSubmitResult<Payload, ErrorType = DefaultErrorType<Payload>> = {
+type ErrorType = Record<string, string[]>;
+
+export type FormSubmitResult<Payload> = {
   success: boolean | null;
   payload: Payload;
-  errors?: ErrorType;
+  errors?: ErrorType; // PartialでPayloadから生成したいが、配列やネスト構造があるとFormDataのnameとPayloadのkeyが一致しないため汎用的にした
   toastMessage?: string;
 };
 
-export type DefaultErrorType<Payload> = Partial<
-  Record<keyof Payload, string[]>
->;
-
-interface Props<Payload, ErrorType> {
-  submitAction: (
-    formData: FormData,
-  ) => Promise<FormSubmitResult<Payload, ErrorType>>;
+interface Props<Payload> {
+  submitAction: (formData: FormData) => Promise<FormSubmitResult<Payload>>;
   initialPayload: Payload;
   options?: {
     resetOnSuccess?: boolean; // default: true
@@ -44,16 +40,16 @@ interface Props<Payload, ErrorType> {
  *   onError: サブミット失敗時のコールバック関数（エラー時に特別な処理をする）
  * }
  */
-export function useToastedForm<Payload, ErrorType = DefaultErrorType<Payload>>({
+export function useToastedForm<Payload>({
   submitAction,
   initialPayload,
   options,
-}: Props<Payload, ErrorType>) {
+}: Props<Payload>) {
   // useRefでフォーム要素を保持
   const formRef = useRef<HTMLFormElement | null>(null);
 
   const submit = async (
-    _prevState: FormSubmitResult<Payload, ErrorType>,
+    _prevState: FormSubmitResult<Payload>,
     formData: FormData,
   ) => {
     const result = await submitAction(

@@ -8,7 +8,7 @@ import {
 import { twMerge } from "tailwind-merge";
 
 interface FormProps extends Omit<RACFormProps, "validationErrors"> {
-  validationErrors?: Partial<Record<string, string[]>> | undefined;
+  validationErrors?: Record<string, string[]> | undefined;
 }
 
 export function Form({ className, validationErrors, ...props }: FormProps) {

@@ -1,8 +1,7 @@
 "use server";
 
 import type { FormSubmitResult } from "@/hooks/useToastedForm";
-import { formDataToJson } from "@/lib/formDataParser/formDataToJson";
-import { formatZodErrors } from "@/lib/formDataParser/formatZodErrors";
+import { createZodValidatedAction } from "@/lib/createZodValidatedAction";
 import { z } from "zod";
 
 const schema = z.object({
@@ -27,26 +26,26 @@ const schema = z.object({
   }),
 });
 export type Payload = z.infer<typeof schema>;
-export type Report = Payload["reports"][number];
 
-export async function submit(
+async function action(
+  parsedPayload: Payload,
   formData: FormData,
 ): Promise<FormSubmitResult<Payload>> {
-  const data = formDataToJson(formData);
+  console.log(parsedPayload, formData);
 
-  const parsed = schema.safeParse(data);
-  if (!parsed.success) {
+  if (Math.random() > 0.5) {
     return {
       success: false,
-      payload: data as unknown as Payload,
-      errors: formatZodErrors(parsed.error.errors),
-      toastMessage: "入力内容を確認してください",
+      payload: parsedPayload,
+      toastMessage: "システムエラーです",
     };
   }
 
   return {
     success: true,
-    payload: parsed.data,
+    payload: parsedPayload,
     toastMessage: "送信しました",
   };
 }
+
+export const submit = createZodValidatedAction(schema, action);

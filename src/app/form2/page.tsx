@@ -32,9 +32,6 @@ export default function Page() {
     },
     options: {
       resetOnSuccess: true,
-      beforeSubmit(formData) {
-        return formData;
-      },
     },
   });
 
